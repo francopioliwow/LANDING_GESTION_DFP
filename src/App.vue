@@ -46,9 +46,7 @@ const toggleFullscreen = async () => {
   try {
     if (document.fullscreenElement) await document.exitFullscreen()
     else await document.documentElement.requestFullscreen()
-  } catch {
-    // Fullscreen may be blocked in an embedded preview; the page remains usable.
-  }
+  } catch {}
 }
 
 const updateFullscreen = () => {
@@ -56,7 +54,10 @@ const updateFullscreen = () => {
 }
 
 const closeMapOnEscape = (event) => {
-  if (event.key === 'Escape') showMap.value = false
+  if (event.key === 'Escape') {
+    showMap.value = false
+    closeMenu()
+  }
 }
 
 watch(selectedDeptId, async () => {
@@ -67,6 +68,10 @@ watch(selectedDeptId, async () => {
 watch(showCenters, async () => {
   await nextTick()
   ScrollTrigger.refresh()
+})
+
+watch(showMap, (open) => {
+  document.body.classList.toggle('map-is-open', open)
 })
 
 onMounted(() => {
@@ -138,6 +143,7 @@ onBeforeUnmount(() => {
   window.removeEventListener('resize', updateScroll)
   document.removeEventListener('fullscreenchange', updateFullscreen)
   document.removeEventListener('keydown', closeMapOnEscape)
+  document.body.classList.remove('map-is-open')
 })
 </script>
 
@@ -154,12 +160,13 @@ onBeforeUnmount(() => {
       </nav>
       <div class="header-actions">
         <button class="presentation-button" @click="toggleFullscreen">{{ isFullscreen ? 'Salir de pantalla completa' : 'Presentar' }}</button>
-        <button class="menu-toggle" type="button" :aria-expanded="menuOpen" aria-label="Abrir navegación" @click="menuOpen = !menuOpen">
+        <button class="menu-toggle" type="button" :aria-expanded="menuOpen" :aria-label="menuOpen ? 'Cerrar menú' : 'Abrir menú'" aria-controls="mobile-navigation" @click="menuOpen = !menuOpen">
           <span></span><span></span><span></span>
         </button>
       </div>
-      <nav v-if="menuOpen" class="mobile-nav" aria-label="Menú">
+      <nav v-if="menuOpen" id="mobile-navigation" class="mobile-nav" aria-label="Menú">
         <a v-for="link in sectionLinks" :key="link.id" :href="'#' + link.id" @click="closeMenu">{{ link.label }}</a>
+        <button type="button" class="mobile-present" @click="closeMenu(); toggleFullscreen()">{{ isFullscreen ? 'Salir de pantalla completa' : 'Presentar' }}</button>
       </nav>
     </header>
 
@@ -206,21 +213,18 @@ onBeforeUnmount(() => {
           <div class="hero-foot-logos">
             <img :src="crest('policia')" alt="Policía de Córdoba" />
             <img :src="crest('recursos-humanos')" alt="Dirección General de Recursos Humanos" />
-            <span>Una gestión. Toda la provincia.</span>
           </div>
-          <div class="hero-scroll-cue"><span></span> DESPLAZARSE PARA CONTINUAR</div>
         </div>
       </section>
 
       <section id="panorama" class="section section-anchor section-panorama">
         <div class="page-container">
           <div class="section-heading" data-reveal>
-            <div class="eyebrow">VISIÓN GENERAL · 2026</div>
             <h2>La Dirección <span>en cifras.</span></h2>
           </div>
           <div class="panorama-layout">
             <article class="main-stat-card" data-reveal>
-              <div class="card-topline"><span>FORMACIÓN INICIAL</span><span>2026</span></div>
+              <div class="card-topline"><span>FORMACIÓN INICIAL</span></div>
               <div class="main-stat-number" :data-count="overview.students">{{ number(overview.students) }}</div>
               <h3>Alumnos en formación</h3>
               <div class="population-track" role="img" aria-label="711 cadetes y 3.150 aspirantes">
@@ -235,24 +239,20 @@ onBeforeUnmount(() => {
             </article>
             <div class="secondary-stats">
               <article class="mini-stat" data-reveal>
-                <span class="mini-stat-symbol">01 / ESCUELAS</span>
                 <strong data-count="3">3</strong>
                 <span>Departamentos de formación</span>
               </article>
               <article class="mini-stat" data-reveal>
-                <span class="mini-stat-symbol">02 / INTERIOR</span>
                 <strong :data-count="overview.annexes">{{ number(overview.annexes) }}</strong>
                 <span>Centros anexos de Suboficiales</span>
               </article>
               <article class="mini-stat" data-reveal>
-                <span class="mini-stat-symbol">03 / DOCENCIA</span>
                 <strong :data-count="overview.instructors">{{ number(overview.instructors) }}</strong>
-                <span>Docentes informados por Suboficiales</span>
+                <span>Docentes de Suboficiales</span>
               </article>
               <article class="mini-stat accent-stat" data-reveal>
-                <span class="mini-stat-symbol">04 / FORTALECIMIENTO</span>
                 <strong :data-count="overview.trainingReached">{{ number(overview.trainingReached) }}</strong>
-                <span>Personal capacitado en las jornadas</span>
+                <span>Personal capacitado</span>
               </article>
             </div>
           </div>
@@ -262,7 +262,6 @@ onBeforeUnmount(() => {
       <section id="escuelas" class="section section-anchor section-schools">
         <div class="page-container">
           <div class="section-heading" data-reveal>
-            <div class="eyebrow">ESTRUCTURA DE FORMACIÓN</div>
             <h2>Tres escuelas. <span>Una Dirección.</span></h2>
           </div>
           <div class="school-tabs" role="tablist" aria-label="Seleccionar Departamento" data-reveal>
@@ -277,10 +276,8 @@ onBeforeUnmount(() => {
                 <img :src="currentDept.image" :alt="'Actividad institucional de ' + currentDept.shortName" />
                 <div class="school-photo-overlay"></div>
                 <img class="school-floating-crest" :src="currentDept.crest" :alt="'Escudo de ' + currentDept.shortName" />
-                <span class="photo-label">POLICÍA DE CÓRDOBA · FORMACIÓN 2026</span>
               </div>
               <div class="school-information">
-                <div class="eyebrow">{{ currentDept.eyebrow }}</div>
                 <h3>{{ currentDept.name }}</h3>
                 <p class="honorary">{{ currentDept.honorary }}</p>
                 <div class="school-metrics">
@@ -298,7 +295,6 @@ onBeforeUnmount(() => {
       <section id="territorio" class="section section-anchor section-territory">
         <div class="page-container">
           <div class="section-heading" data-reveal>
-            <div class="eyebrow">PRESENCIA EN EL INTERIOR</div>
             <h2>Formación <span>en territorio.</span></h2>
           </div>
           <div class="territory-layout">
@@ -315,7 +311,6 @@ onBeforeUnmount(() => {
             <div class="territory-chart" data-reveal>
               <div class="chart-caption">
                 <h3>Centros con mayor matrícula</h3>
-                <span>ASPIRANTES · CONSOLIDADO</span>
               </div>
               <div class="territory-bars">
                 <div v-for="(center, i) in mainCenters" :key="center.name" class="territory-row">
@@ -335,7 +330,6 @@ onBeforeUnmount(() => {
       <section id="formacion" class="section section-anchor section-training">
         <div class="page-container">
           <div class="section-heading" data-reveal>
-            <div class="eyebrow">CAPACITACIÓN PERMANENTE</div>
             <h2>Preparación, <span>conocimiento y acción.</span></h2>
           </div>
           <div class="training-layout">
@@ -345,12 +339,10 @@ onBeforeUnmount(() => {
                 <div>
                   <strong class="training-big" :data-count="overview.trainingReached">{{ number(overview.trainingReached) }}</strong>
                   <p>Personal capacitado</p>
-                  <small>Sobre una población prevista de {{ number(overview.trainingTarget) }}.</small>
+                  <small>Meta: {{ number(overview.trainingTarget) }}</small>
                 </div>
                 <div class="coverage-ring" :style="{ '--coverage': coverage + '%' }"><div><strong>{{ coverage }}%</strong><span>AVANCE</span></div></div>
               </div>
-              <div class="training-progress-label"><span>AVANCE DEL PROGRAMA</span><span>{{ coverage }}%</span></div>
-              <div class="training-track"><span :style="{ width: coverage + '%' }"></span></div>
             </article>
             <div class="training-aside">
               <article class="training-aside-card" data-reveal>
@@ -361,7 +353,7 @@ onBeforeUnmount(() => {
               <article class="training-aside-card training-aside-image" data-reveal>
                 <img :src="photo('anexo_dean_funes')" alt="Prácticas en el Centro Anexo Deán Funes" />
                 <div class="training-aside-image-shade"></div>
-                <div class="training-aside-image-content"><span>PRÁCTICA OPERATIVA · DEÁN FUNES</span><strong>12 jornadas</strong><p>Equipamiento, tiro y manejo de armas.</p></div>
+                <div class="training-aside-image-content"><span>PRÁCTICA OPERATIVA · DEÁN FUNES</span><strong>12 jornadas</strong></div>
               </article>
             </div>
           </div>
@@ -371,7 +363,6 @@ onBeforeUnmount(() => {
       <section id="gestion" class="section section-anchor section-management">
         <div class="page-container">
           <div class="section-heading" data-reveal>
-            <div class="eyebrow">ACCIONES INSTITUCIONALES</div>
             <h2>Gestión que <span>se transforma en resultados.</span></h2>
           </div>
           <div class="project-grid">
@@ -380,7 +371,6 @@ onBeforeUnmount(() => {
               <div class="project-content">
                 <span>{{ project.department }}</span>
                 <h3>{{ project.title }}</h3>
-                <b>{{ project.tag }}</b>
               </div>
             </article>
           </div>
@@ -390,7 +380,6 @@ onBeforeUnmount(() => {
       <section id="hitos" class="section section-anchor section-milestones">
         <div class="page-container">
           <div class="section-heading" data-reveal>
-            <div class="eyebrow">HITOS INSTITUCIONALES</div>
             <h2>Un año de <span>acciones concretas.</span></h2>
           </div>
           <div class="timeline">
@@ -406,7 +395,6 @@ onBeforeUnmount(() => {
 
       <section id="cierre" class="finale section-anchor">
         <div class="finale-grid" aria-hidden="true"></div>
-        <div class="finale-orbit" aria-hidden="true"></div>
         <div class="finale-inner page-container" data-reveal>
           <img class="finale-crest" :src="crest('direccion-formacion')" alt="Escudo de la Dirección Formación Profesional" />
           <div class="eyebrow">POLICÍA DE LA PROVINCIA DE CÓRDOBA</div>

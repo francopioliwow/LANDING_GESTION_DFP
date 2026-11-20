@@ -20,15 +20,12 @@ export const departments = [
     honorary: 'Brig. Gral. Juan Bautista Bustos',
     crest: crest('escuela-superior'),
     image: photo('superior_autoridades'),
-    eyebrow: 'Perfeccionamiento y promoción jerárquica',
-    description: 'Formación, capacitación y perfeccionamiento continuo del personal superior de la Policía de Córdoba.',
     stats: [
       { value: 1515, label: 'Convocados' },
       { value: 1220, label: 'Inscriptos' },
       { value: 512, label: 'Aprobados' },
       { value: 23, label: 'Personal estable' },
     ],
-    note: 'Situación académica informada por el Departamento. Convocados e inscriptos difieren del resumen de la Dirección.',
   },
   {
     id: 'oficiales',
@@ -37,15 +34,12 @@ export const departments = [
     honorary: 'Ltdor. Gral. Don José de San Martín',
     crest: crest('escuela-oficiales'),
     image: photo('oficiales_formacion'),
-    eyebrow: 'Formación inicial de oficiales',
-    description: 'Formación académica, operativa, ética y profesional de los futuros oficiales, con alcance en Capital y centros anexos.',
     stats: [
       { value: 711, label: 'Cadetes' },
       { value: 3, label: 'Promociones activas' },
-      { value: 17, label: 'Capacitaciones informadas' },
-      { value: 2, label: 'Anexos consignados' },
+      { value: 17, label: 'Capacitaciones' },
+      { value: 2, label: 'Anexos' },
     ],
-    note: 'El total de cadetes corresponde a la Escuela completa, incluidos sus anexos.',
   },
   {
     id: 'suboficiales',
@@ -54,20 +48,15 @@ export const departments = [
     honorary: 'Gral. Manuel Belgrano',
     crest: crest('escuela-suboficiales'),
     image: photo('suboficiales_bandera'),
-    eyebrow: 'Formación inicial de agentes',
-    description: 'Formación profesional y humanística de los futuros suboficiales, articulada entre la sede Capital y los centros anexos.',
     stats: [
       { value: 3150, label: 'Aspirantes' },
       { value: 23, label: 'Centros anexos' },
-      { value: 473, label: 'Docentes informados' },
-      { value: 4, label: 'Promociones consignadas' },
+      { value: 473, label: 'Docentes' },
+      { value: 4, label: 'Promociones' },
     ],
-    note: 'Alumnos y centros corresponden al consolidado de la Escuela; no se suman nuevamente los informes de anexos.',
   },
 ]
 
-// Fuente: «Cantidad de alumnos por Anexo» del consolidado del
-// Departamento Escuela de Suboficiales. Revisión de consistencia pendiente.
 export const centers = [
   ['Valle Hermoso', 335],
   ['Villa Dolores', 279],
@@ -99,29 +88,21 @@ export const projects = [
     title: 'Formación y prácticas',
     department: 'Escuela de Suboficiales',
     image: photo('suboficiales_practicas'),
-    detail: 'Prácticas profesionalizantes y preparación operativa.',
-    tag: 'Formación aplicada',
   },
   {
     title: 'Entrenamiento territorial',
     department: 'Centro Anexo Deán Funes',
     image: photo('anexo_dean_funes'),
-    detail: 'Jornadas de equipamiento, tiro y manejo de armas.',
-    tag: '12 jornadas',
   },
   {
     title: 'Infraestructura educativa',
     department: 'Escuela de Oficiales',
     image: photo('oficiales_obras'),
-    detail: 'Intervenciones y mejoras de espacios de formación.',
-    tag: 'Mejoras edilicias',
   },
   {
     title: 'Articulación institucional',
     department: 'Escuela Superior',
     image: photo('superior_edificio'),
-    detail: 'Instalaciones, proyectos y acciones de perfeccionamiento.',
-    tag: 'Gestión institucional',
   },
 ]
 
@@ -130,29 +111,19 @@ export const milestones = [
     month: 'ABR · MAY',
     year: '2026',
     title: 'Apertura de centros anexos',
-    description: 'Inauguraciones de nuevos centros anexos registradas por la Escuela de Suboficiales.',
     image: photo('anexo_alta_gracia'),
   },
   {
     month: 'JUNIO',
     year: '2026',
     title: 'Inauguración de gimnasio cubierto',
-    description: 'Inauguración del gimnasio cubierto informada por la Escuela Superior.',
     image: photo('superior_edificio'),
   },
   {
     month: 'DURANTE EL AÑO',
     year: '2026',
     title: 'Capacitaciones en Capital e interior',
-    description: 'Desarrollo de capacitaciones, actividades operativas y prácticas en Capital e interior.',
     image: photo('suboficiales_formacion'),
-  },
-  {
-    month: 'NOVIEMBRE',
-    year: '2026',
-    title: 'Consolidación del informe 2026',
-    description: 'Integración de la información anual de la Dirección, los Departamentos y sus anexos.',
-    image: photo('oficiales_ceremonia'),
   },
 ]
 

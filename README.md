@@ -1,6 +1,17 @@
 # Control de Gestión 2026 · Dirección Formación Profesional
 
-Landing institucional ejecutable con Vue 3, GSAP/ScrollTrigger y Vite. Versión 0.6: textos depurados en todas las secciones y mapa real de la distribución de anexos, con fondo transparente y ampliación al hacer clic. Se mantienen el video Full HD y la identidad institucional.
+Landing institucional con Vue 3, GSAP/ScrollTrigger y Vite. Versión 0.7: adaptación para celulares y tablets, portada sin superposición del escudo, navegación táctil, mapa ampliable y textos visuales más concisos. Se mantienen el video Full HD, los indicadores y los escudos originales.
+
+## Actualizar el repositorio que ya está publicado en GitHub Pages
+
+El flujo `deploy.yml` creado en GitHub ya funciona. No lo borres ni lo reemplaces.
+
+1. En tu proyecto local existente, hacé **Git Pull** para traer cualquier cambio pendiente.
+2. Copiá desde este ZIP los archivos `src/App.vue`, `src/styles.css`, `src/data.js`, `vite.config.js`, `package.json`, `package-lock.json` y, si querés, este `README.md`, manteniendo sus rutas. Los assets ya son los mismos de la versión anterior.
+3. Probá con `npm run dev` y luego `npm run build`.
+4. Hacé **Commit and Push** a la rama `main`. GitHub Actions publica automáticamente el resultado en `https://controldegestion.dfp.com.ar`.
+
+En `vite.config.js`, `base: '/'` corresponde al dominio personalizado.
 
 ## Levantar en tu computadora
 
@@ -19,7 +30,7 @@ Requisitos: Node.js 20.19+ o 22.12+ (se recomienda Node.js 24).
 
    npm run build
 
-El resultado queda en dist/. Ese directorio contiene la versión estática lista para servir desde IIS, Nginx, Apache o un hosting estático. El ZIP también trae un directorio dist/ ya compilado para facilitar la primera prueba.
+El resultado queda en dist/. Ese directorio contiene la versión estática lista para servir desde IIS, Nginx, Apache o un hosting estático. El ZIP no incluye `dist/`: GitHub Actions lo genera al publicar.
 
 Para probar solamente la versión compilada:
 
