@@ -100,6 +100,9 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--ice); outline-o
   display: grid; grid-template-columns: 1.07fr .93fr; align-items: center; gap: 24px;
 }
 .hero-copy { z-index: 3; }
+.hero-brand-row { display: flex; align-items: center; gap: clamp(16px,2.6vw,34px); max-width: 100%; }
+.hero-agency-logos { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.hero-agency-logos img { width: 52px; height: 60px; object-fit: contain; filter: drop-shadow(0 7px 13px rgba(0,0,0,.45)); }
 .hero-police-wordmark {
   display: flex; flex-direction: column; align-items: flex-start; width: max-content;
   color: #fff; text-shadow: 0 4px 20px rgba(0,0,0,.45);
@@ -114,6 +117,8 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--ice); outline-o
 }
 .hero-hierarchy { display: flex; flex-direction: column; gap: 7px; margin: 23px 0 29px; color: #cbdceb; font-size: .88rem; letter-spacing: .02em; }
 .hero-hierarchy span:last-child { color: #eef6ff; font-weight: 700; }
+.hero-heading-row { min-width: 0; }
+.hero-inline-crest { display: none; }
 .hero-title {
   font-family: Manrope, sans-serif; font-weight: 800; font-size: clamp(3.8rem, 6vw, 7.1rem);
   letter-spacing: -.082em; line-height: 1.055; margin: 0; color: #fff;
@@ -144,13 +149,6 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--ice); outline-o
   background: radial-gradient(ellipse, rgba(0,10,30,.58) 0%, rgba(0,10,30,.25) 46%, transparent 75%);
 }
 .hero-crest-frame img { width: 100%; max-height: 100%; object-fit: contain; filter: drop-shadow(0 19px 26px rgba(0,0,0,.6)); }
-.hero-foot {
-  position: absolute; bottom: 23px; left: 50%; transform: translateX(-50%);
-  z-index: 4; display: flex; justify-content: space-between; align-items: center;
-  padding-top: 19px; border-top: 1px solid rgba(171,213,238,.13);
-}
-.hero-foot-logos { display: flex; align-items: center; gap: 17px; }
-.hero-foot-logos img { width: 29px; height: 32px; object-fit: contain; }
 
 .section { padding: 118px 0; position: relative; }
 .section-heading { margin-bottom: 53px; }
@@ -418,13 +416,13 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--ice); outline-o
 
 @media (max-width: 700px) {
   :root { --page: calc(100% - 40px); }
-  .hero-content { grid-template-columns: minmax(0,1fr); gap: 12px; padding: 120px 0 100px; }
+  .hero-content { grid-template-columns: minmax(0,1fr); gap: 0; padding: 120px 0 70px; }
+  .hero-heading-row { display: grid; grid-template-columns: minmax(0,1fr) clamp(78px,21vw,118px); align-items: start; gap: clamp(8px,2vw,16px); }
+  .hero-inline-crest { display: block; width: 100%; height: auto; max-height: 140px; object-fit: contain; margin-top: 7px; filter: drop-shadow(0 12px 18px rgba(0,0,0,.55)); }
   .hero-title { font-size: clamp(2.85rem, 8.9vw, 4.8rem); }
   .hero-hierarchy { margin: 20px 0 24px; }
   .hero-ctas { margin-top: 25px; }
-  .hero-visual { height: 220px; display: flex; justify-content: flex-end; }
-  .hero-crest-frame { width: min(47vw, 210px); margin-right: 5%; }
-  .hero-foot { bottom: 18px; }
+  .hero-visual { display: none; }
   .school-tabs {
     grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: minmax(155px, 42%);
     overflow-x: auto; overscroll-behavior-inline: contain; scroll-snap-type: x proximity;
@@ -454,7 +452,10 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--ice); outline-o
     background: linear-gradient(90deg, rgba(1,13,33,.84), rgba(1,18,41,.42)),
                 linear-gradient(180deg, rgba(1,13,33,.25), rgba(1,13,33,.14) 62%, rgba(1,13,33,.74));
   }
-  .hero-content { padding: 116px 0 100px; gap: 10px; }
+  .hero-content { padding: 116px 0 70px; }
+  .hero-brand-row { gap: 12px; }
+  .hero-agency-logos { gap: 8px; }
+  .hero-agency-logos img { width: 39px; height: 46px; }
   .police-wordmark-main { font-size: clamp(2.4rem, 11vw, 3.4rem); }
   .police-wordmark-sub { font-size: clamp(.61rem, 2.6vw, .75rem); }
   .hero-hierarchy { font-size: clamp(.8rem, 2.45vw, .94rem); line-height: 1.5; margin: 18px 0 22px; gap: 3px; }
@@ -462,11 +463,6 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--ice); outline-o
   .hero-title em { margin-top: 10px; font-size: .7em; }
   .hero-ctas { align-items: flex-start; gap: 15px; margin-top: 22px; }
   .button-primary { min-height: 48px; padding: 13px 19px; }
-  .hero-visual { height: 200px; width: 100%; opacity: 1; inset: auto; }
-  .hero-crest-frame { width: min(46vw, 188px); margin-right: 3%; }
-  .hero-foot { bottom: 16px; padding-top: 14px; }
-  .hero-foot-logos { gap: 10px; }
-  .hero-foot-logos img { width: 24px; height: 26px; }
   .section { padding: 70px 0; }
   .section-heading { margin-bottom: 28px; }
   .section-heading h2 { font-size: clamp(2rem, 7.5vw, 2.75rem); overflow-wrap: break-word; }
@@ -534,8 +530,10 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--ice); outline-o
     background: transparent; border: 1px solid rgba(201,173,119,.65);
     color: var(--gold-bright); font-size: .95rem; font-weight: 700;
   }
-  .hero-visual { height: 185px; }
-  .hero-crest-frame { width: min(44vw, 170px); }
+  .hero-brand-row { gap: 9px; }
+  .hero-agency-logos { gap: 6px; }
+  .hero-agency-logos img { width: 34px; height: 41px; }
+  .hero-heading-row { grid-template-columns: minmax(0,1fr) 80px; gap: 8px; }
   .hero-title { font-size: clamp(2.42rem, 9.2vw, 3rem); }
   .hero-hierarchy { font-size: .8rem; }
   .school-metrics { margin-top: 21px; }
@@ -552,10 +550,9 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--ice); outline-o
   .site-header { padding-inline: 12px; }
   .site-brand strong { font-size: .61rem; }
   .site-brand small { font-size: .59rem; }
-  .hero-title { font-size: 2.35rem; }
+  .hero-title { font-size: 2.18rem; }
   .hero-hierarchy { font-size: .76rem; }
-  .hero-visual { height: 170px; }
-  .hero-crest-frame { width: 150px; }
+  .hero-heading-row { grid-template-columns: minmax(0,1fr) 74px; }
   .mini-stat { padding: 19px 12px; }
   .mini-stat > span:last-child { font-size: .83rem; }
   .population-legend { gap: 10px; }

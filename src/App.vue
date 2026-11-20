@@ -98,10 +98,10 @@ onMounted(() => {
     media.add('(prefers-reduced-motion: no-preference)', () => {
       const intro = gsap.timeline({ defaults: { ease: 'power3.out' } })
       intro
-        .from('.hero-police-wordmark', { opacity: 0, y: 18, duration: 0.72 })
+        .from('.hero-brand-row', { opacity: 0, y: 18, duration: 0.72 })
         .from('.hero-title', { opacity: 0, y: 48, duration: 1.0 }, '-=0.48')
-        .from('.hero-visual', { opacity: 0, scale: 0.84, rotateY: -12, duration: 1.15 }, '-=0.65')
-        .from('.hero-foot', { opacity: 0, y: 22, duration: 0.55 }, '-=0.55')
+        .from('.hero-visual, .hero-inline-crest', { opacity: 0, scale: 0.9, duration: 1.05 }, '-=0.65')
+        .from('.hero-ctas', { opacity: 0, y: 22, duration: 0.55 }, '-=0.55')
 
       gsap.utils.toArray('[data-reveal]').forEach((element) => {
         gsap.from(element, {
@@ -189,16 +189,25 @@ onBeforeUnmount(() => {
         </div>
         <div class="hero-content page-container">
           <div class="hero-copy">
-            <div class="hero-police-wordmark" aria-label="Policía de la Provincia de Córdoba">
-              <span class="police-wordmark-main">POLICÍA</span>
-              <span class="police-wordmark-sub">DE LA PROVINCIA DE CÓRDOBA</span>
+            <div class="hero-brand-row">
+              <div class="hero-police-wordmark" aria-label="Policía de la Provincia de Córdoba">
+                <span class="police-wordmark-main">POLICÍA</span>
+                <span class="police-wordmark-sub">DE LA PROVINCIA DE CÓRDOBA</span>
+              </div>
+              <div class="hero-agency-logos">
+                <img :src="crest('policia')" alt="Escudo de la Policía de Córdoba" />
+                <img :src="crest('recursos-humanos')" alt="Escudo de Recursos Humanos" />
+              </div>
             </div>
             <div class="hero-hierarchy">
               <span>Dirección General de Recursos Humanos</span>
               <span>Subdirección General de Recursos Humanos</span>
               <span>Dirección Formación Profesional</span>
             </div>
-            <h1 class="hero-title">CONTROL<br />DE <span>GESTIÓN</span><em>2026</em></h1>
+            <div class="hero-heading-row">
+              <h1 class="hero-title">CONTROL<br />DE <span>GESTIÓN</span><em>2026</em></h1>
+              <img class="hero-inline-crest" :src="crest('direccion-formacion')" alt="" aria-hidden="true" />
+            </div>
             <div class="hero-ctas">
               <button class="button-primary" @click="jumpTo('panorama')">Explorar resultados</button>
             </div>
@@ -207,12 +216,6 @@ onBeforeUnmount(() => {
             <div class="hero-crest-frame">
               <img :src="crest('direccion-formacion')" alt="" />
             </div>
-          </div>
-        </div>
-        <div class="hero-foot page-container">
-          <div class="hero-foot-logos">
-            <img :src="crest('policia')" alt="Policía de Córdoba" />
-            <img :src="crest('recursos-humanos')" alt="Dirección General de Recursos Humanos" />
           </div>
         </div>
       </section>
